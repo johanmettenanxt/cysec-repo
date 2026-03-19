@@ -1,4 +1,5 @@
-﻿import hashlib
+import hashlib
+
 
 GLOBAL_SALT = "mijn_geheime_salt"
 
@@ -30,17 +31,14 @@ def main():
     print("Programma beëindigd.")
 
 
+
 def registreer_gebruiker():
     global opgeslagen_gebruikersnaam, opgeslagen_wachtwoord_hash
 
-    gebruikersnaam = input("Gebruikersnaam: ")
-    wachtwoord = input("Wachtwoord: ")
+    gebruikersnaam = input("Kies een gebruikersnaam: ")
+    wachtwoord = input("Kies een wachtwoord: ")
 
     wachtwoord_hash = hash_wachtwoord(wachtwoord)
-
-    if opgeslagen_gebruikersnaam == gebruikersnaam:
-        print("Gebruiker bestaat al.")
-        return
 
     opgeslagen_gebruikersnaam = gebruikersnaam
     opgeslagen_wachtwoord_hash = wachtwoord_hash
@@ -52,7 +50,7 @@ def login_gebruiker():
     global opgeslagen_gebruikersnaam, opgeslagen_wachtwoord_hash
 
     if opgeslagen_gebruikersnaam is None:
-        print("Geen gebruiker geregistreerd.")
+        print("Er is nog geen gebruiker geregistreerd.")
         return
 
     gebruikersnaam = input("Gebruikersnaam: ")
@@ -60,19 +58,17 @@ def login_gebruiker():
 
     wachtwoord_hash = hash_wachtwoord(wachtwoord)
 
-    if (
-        gebruikersnaam == opgeslagen_gebruikersnaam
-        and wachtwoord_hash == opgeslagen_wachtwoord_hash
-    ):
+    if (gebruikersnaam == opgeslagen_gebruikersnaam and
+            wachtwoord_hash == opgeslagen_wachtwoord_hash):
         print("Succesvol ingelogd!")
     else:
         print("Onjuiste gegevens.")
 
 
 def hash_wachtwoord(wachtwoord):
-    combined = GLOBAL_SALT + wachtwoord
-
-    return hashlib.sha256(combined.encode()).hexdigest()
+    gecombineerde_input = wachtwoord + GLOBAL_SALT
+    hash_object = hashlib.sha256(gecombineerde_input.encode())
+    return hash_object.hexdigest()
 
 
 if __name__ == "__main__":
