@@ -1,50 +1,68 @@
-class CaesarCipher:
+def encode(text, shift):
+    result = ""
+    i = 0
 
-    @staticmethod
-    def Main():
-        print("Caesar Cipher")
-        print("Wil je encoden of decoden? (E/D)")
+    while i < len(text):
+        c = text[i]
 
-        choice = input().upper()
-
-        print("Geef de shift (bijvoorbeeld 3):")
-        shift = int(input())
-
-        print("Geef het bericht:")
-        message = input()
-
-        if choice == "E":
-            result = CaesarCipher.Encode(message, shift)
-
-        elif choice == "D":
-            result = CaesarCipher.Decode(message, shift)
-
+        if c.isalpha():
+            s = 0
+            while s < shift:
+                if c == 'Z':
+                    c = 'A'
+                elif c == 'z':
+                    c = 'a'
+                else:
+                    c = chr(ord(c) + 1)
+                s += 1
+            result += c
         else:
-            print("Ongeldige keuze.")
-            return
+            result += c
 
-        print("Resultaat:")
-        print(result)
+        i += 1
 
-    @staticmethod
-    def Encode(text, shift):
-        result = ""
+    return result
 
-        for a in text:
 
-            if a.isalpha():
-                base = ord('A') if a.isupper() else ord('a')
+def decode(text, shift):
+    result = ""
+    i = 0
 
-                result += chr((ord(a) - base + shift) % 26 + base)
+    while i < len(text):
+        c = text[i]
 
-            else:
-                result += a
+        if c.isalpha():
+            s = 0
+            while s < shift:
+                if c == 'A':
+                    c = 'Z'
+                elif c == 'a':
+                    c = 'z'
+                else:
+                    c = chr(ord(c) - 1)
+                s += 1
+            result += c
+        else:
+            result += c
 
-        return result
+        i += 1
 
-    @staticmethod
-    def Decode(text, shift):
-        return CaesarCipher.Encode(text, -shift)
+    return result
 
-if __name__ == "__main__":
-    CaesarCipher.Main()
+
+print("Caesar Cipher")
+
+choice = input("Wil je encoden of decoden? (E/D): ").upper()
+shift = int(input("Geef de shift (bijvoorbeeld 3): "))
+message = input("Geef het bericht: ")
+
+if choice == "E":
+    result = encode(message, shift)
+elif choice == "D":
+    result = decode(message, shift)
+else:
+    print("Ongeldige keuze")
+    quit()
+
+print("Resultaat:")
+print(result)
